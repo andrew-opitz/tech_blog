@@ -1,5 +1,5 @@
 const { Sequelize, Model, DataTypes } = require('sequelize')
-
+const db = require('../config/connection')
 
 class Post extends Model {
 
@@ -19,10 +19,12 @@ Post.init({
     text: {
         type: DataTypes.STRING,
         allowNull: false
-    },
+    }
     
-    
+}, {
+    modelName: 'user',
+    sequelize: db,
 })
 
-// come back for hooks
+
 module.exports = Post

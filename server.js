@@ -2,7 +2,7 @@ const express = require('express')
 const db = require('./config/connection')
 
 const routes = require('./controllers/api/index')
-const html_routes = require('./controllers/view_routes/index')
+const view_routes = require('./controllers/view_routes/index')
 const { engine } = require('express-handlebars')
 
 const session = require('express-session')
@@ -20,7 +20,7 @@ app.engine('.hbs', engine({ extname: '.hbs' }))
 app.set('view engine', '.hbs')
 
 app.use('/api', routes)
-app.use('/', html_routes)
+app.use('/', view_routes)
 
 
 db.sync({ force: false })

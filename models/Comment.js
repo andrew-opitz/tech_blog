@@ -1,5 +1,5 @@
 const { Sequelize, Model, DataTypes } = require('sequelize')
-
+const db = require('../config/connection')
 
 class Comment extends Model {
 
@@ -18,6 +18,10 @@ Comment.init({
     },
     
     
+}, {
+    modelName: 'user',
+    sequelize: db,
+
 })
 
 // come back for hooks
