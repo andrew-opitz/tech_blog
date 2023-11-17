@@ -1,29 +1,24 @@
 const { Sequelize, Model, DataTypes } = require('sequelize')
 
 
-class User extends Model {
+class Comment extends Model {
 
 }
 
-User.init({
+Comment.init({
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true
     },
-    username: {
+    text: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
     },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            len: [6]
-        }
-    }
+    
+    
 })
 
 // come back for hooks
-module.exports = User
+module.exports = Comment
