@@ -28,5 +28,16 @@ router.post('/post', isAuthed, authenticate, async (req, res) => {
 
     res.redirect('/')
 })
+router.delete('/post/:id', isAuthed, authenticate, async (req, res) => {
+    const deleteID = req.params.id
+    const deletePost = await Post.destroy({
+        where: {
+            id: deleteID
+        }
+    })
+    if (deletePost) {
+        res.redirect('/')
+    }
+})
 
 module.exports = router
