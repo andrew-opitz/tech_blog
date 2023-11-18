@@ -1,14 +1,17 @@
 const express = require('express')
 const db = require('./config/connection')
 
-const routes = require('./controllers/api/index')
-const view_routes = require('./controllers/view_routes/index')
+
 const { engine } = require('express-handlebars')
 
 const session = require('express-session')
 
+const view_routes = require('./controllers/view_routes')
+const user_routes = require('./controllers/user_routes')
+const post_routes = require('./controllers/post_routes')
 
-const PORT = process.env.PORT || 3333
+
+const PORT = process.env.PORT || 3001
 
 const app = express()
 
@@ -25,8 +28,9 @@ app.use(session({
   saveUninitialized: true
 }))
 
-app.use('/', view_routes, routes)
-app.use('/auth', routes)
+app.use('/', view_routes, post_routes)
+
+app.use('/auth', user_routes)
 
 
 db.sync({ force: false })

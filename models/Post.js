@@ -22,7 +22,7 @@ Post.init({
     }
     
 }, {
-    modelName: 'user',
+    modelName: 'user_posts',
     sequelize: db,
 })
 
