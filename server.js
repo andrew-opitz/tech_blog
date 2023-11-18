@@ -1,11 +1,11 @@
 const express = require('express')
+const methodOverride = require('method-override')
 const db = require('./config/connection')
 
 
 const { engine } = require('express-handlebars')
 
 const session = require('express-session')
-const methodOverride = require('method-override')
 
 const view_routes = require('./controllers/view_routes')
 const user_routes = require('./controllers/user_routes')
@@ -16,11 +16,11 @@ const PORT = process.env.PORT || 3001
 
 const app = express()
 
-app.use(methodOverride('_method'))
-
 app.use(express.static('./public'))
 
 app.use(express.urlencoded({ extended: false }))
+
+app.use(methodOverride('_method'))
 
 app.engine('.hbs', engine({ extname: '.hbs' }))
 app.set('view engine', '.hbs')
@@ -31,7 +31,7 @@ app.use(session({
   saveUninitialized: true
 }))
 
-app.use('/', view_routes, post_routes)
+app.use('/', [view_routes, post_routes])
 
 app.use('/auth', user_routes)
 

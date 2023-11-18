@@ -17,10 +17,13 @@
             {{#if user}}
             <p>Welcome, {{user.username}}</p>
             <a href="/post">Make a Post</a>
-            <a href="/logout">Log Out</a>
+            <a href="/auth/logout">Log Out</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/">Home</a>
             {{else}}
+            <a href="/">Home</a>
+            <a href="/dashboard">Dashboard</a>
             <a href="/register">Register</a>
-            <span>or</span>
             <a href="/login">Log in</a>
             {{/if}}
         </nav>

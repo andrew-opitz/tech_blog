@@ -27,6 +27,7 @@ router.post('/login', async (req, res) => {
     })
     if (!user) {
         req.session.errors = ['No user found with that username.']
+        
         return res.redirect('/login')
     }
     const validPass = await user.validatePass(req.body.password)
@@ -42,7 +43,17 @@ router.post('/login', async (req, res) => {
     res.redirect('/')
 })
 
-router.get('/logout', (req, res) => {
+router.get('/logout', async (req, res) => {
+    const user = User.findOne({
+        where: {
+            id: req.session.user_id
+        }
+    })
+    if (!user) {
+        req.session.errors = ['Please try again']
+
+        return res.redirect('/')
+    }
     req.session.destroy()
 
     res.redirect('/')

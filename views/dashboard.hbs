@@ -1,0 +1,42 @@
+<h1 class="text-center">Dashboard</h1>
+<h2 class="text-center">Welcome, {{user.username}}</h2>
+
+{{#if user.posts}}
+  <section class="column align-center post-output">
+    <h2>Your Posts</h2>
+    <table>
+      <thead>
+        <tr class="post">
+          <th>ID</th>
+          <th>Title</th>
+          <th>Text</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each user.posts as |post|}}
+        <tr class="post">
+          <td>{{post.id}}</td>
+          <td>{{post.title}}</td>
+          <td>{{post.text}}</td>
+          <td>
+            <a href="/post/edit/{{post.id}}">
+              <button class="edit-btn">Edit</button>
+            </a>
+          </td>
+          <td>
+            
+            <button class="delete-btn" data-id="{{post.id}}">Delete</button>
+         
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </section>
+{{else}}
+  <p class="text-center">You havent made a post yet.</p>
+{{/if}}
+
+<script src="/js/client.js"></script>

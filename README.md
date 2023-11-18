@@ -3,8 +3,7 @@
 ## Description
 This app was created to serve as a social app for users to share their thought about technology. A user can register, login, see all the posts made, make posts and logout.
 ## Usage
-![Alt Text](./public/images/screenshot_1.png)
-![Alt Text](./public/images/screenshot_2.png)
+![Alt Text](./public/images/screenshot%201.png)
 ## Installation
 Nothing is required to run this application as it is deployed om heroku. Bcrypt, dayjs, dotenv, express, express-handkebars, express-session, mysql2 and sequelize were used to develope the app.
 ## Credits

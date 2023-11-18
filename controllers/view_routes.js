@@ -2,36 +2,8 @@ const router = require('express').Router()
 const User = require('../models/User')
 const Post = require('../models/Post')
 
-function loggedIn(req, res, next) {
-    if(req.session.user_id) {
-        return res.redirect('/')
-    }
+const { loggedIn, isAuthed, authenticate } = require('./helpers')
 
-    next()
-}
-
-function isAuthed(req, res, next) {
-    if (!req.session.user_id) {
-        return res.redirect('/login')
-    }
-
-    next()
-}
-
-
-async function authenticate(req, res, next) {
-    const user_id = req.session.user_id
-
-    if(user_id) {
-        const user = await User.findByPk(req.session.user_id, {
-            attributes: ['id', 'username']
-        })
-
-        req.user = user.get({plain: true})
-    }
-    
-    next()
-}
 
 router.get('/', authenticate, async (req, res) => {
     const posts = await Post.findAll({
@@ -71,12 +43,40 @@ router.get('/post', isAuthed, authenticate, (req, res) => {
 
     req.session.errors = []
 })
-router.get('/logout', (req, res) => {
-    res.render('landing_page', {
-        errors: req.session.errors 
+router.get('/post/edit/:id', isAuthed, authenticate, async (req, res) => {
+    const editID = req.params.id
+    const post = await Post.findByPk(editID)
+
+    res.render('edit_post_form', {
+        user: req.user,
+        post: post.get({ plain: true }),
+        title: 'Edit Post ' + post.id
     })
-    req.session.errors = []
 })
+
+router.get('/dashboard', isAuthed, authenticate, async (req, res) => {
+    try {
+        const currentUserWithPosts = await User.findAll({
+          where: {
+            id: req.session.user_id,
+          },
+          include: 'posts',
+        });
+    
+        if (currentUserWithPosts.length === 0) {
+          // Handle the case where the user is not found
+          return res.status(404).send('User not found');
+        }
+    
+        res.render('dashboard', {
+          user: currentUserWithPosts[0].get({ plain: true }),
+        });
+      } catch (error) {
+        console.error('Error fetching user with posts:', error);
+        res.status(500).send('Internal Server Error');
+      }
+    })
+
 
 
 module.exports = router

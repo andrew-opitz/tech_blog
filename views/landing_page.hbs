@@ -1,4 +1,3 @@
-<h1 class="text-center">Post Page</h1>
 
 <section class="column align-center post-output">
     {{#each posts}}
@@ -7,12 +6,8 @@
         <div class="justify-between">
             <p>{{text}}</p>
             <p>By: {{author.username}}</p>
-            <p>{{date}}</p>
+            <p>On: {{date}}</p>
         </div>
-        <form action="/post/{{id}}" method="POST">
-            <input type="hidden" name='_method' value="DELETE">
-            <button type="submit">Delete</button>
-        </form>
     </div>
     {{/each}}
 </section>

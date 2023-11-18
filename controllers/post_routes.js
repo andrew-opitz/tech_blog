@@ -3,48 +3,35 @@ const router = require('express').Router()
 const User = require('../models/User')
 const Post = require('../models/Post')
 
-function isAuthed(req, res, next) {
-    if (!req.session.user_id) {
-        return res.redirect('/login')
-    }
+const { isAuthed } = require('./helpers')
 
-    next()
-}
 
-async function authenticate(req, res, next) {
-    const user_id = req.session.user_id
-
-    if(user_id) {
-        const user = await User.findByPk(req.session.user_id)
-
-        req.user = user
-    }
-    
-    next()
-}
-router.post('/post', isAuthed, authenticate, async (req, res) => {
+router.post('/post', isAuthed, async (req, res) => {
     const post = await Post.create(req.body)
-    await req.user.addPost(post)
+    const user = await User.findByPk(req.session.user_id)
+    await user.addPost(post)
 
     res.redirect('/')
 })
-router.delete('/post/:id', isAuthed, authenticate, async (req, res) => {
-console.log('delete route hit')
-    try {
-        const deleteID = req.params.id
-        const deletePost = await Post.findByPk(deleteID)
 
-        await deletePost.destroy()
+router.put('/post/:id', isAuthed, async (req, res) => {
+    await Post.update(req.body, {
+        where: {
+            id: req.params.id
+        }
+    })
 
-        res.redirect("/")
-    } catch (error) {
-        const validationErrors = error.errors.map((errObj) => errObj.message)
-        req.session.errors = validationErrors;
-        res.render("/", { errors: req.session.errors })
-    }
-    if (deletePost) {
-        res.redirect('/')
-    }
+    res.redirect('/dashboard')
+})
+
+router.delete('/post/:id', isAuthed, async (req, res) => {
+    await Post.destroy({
+        where: {
+            id: req.params.id
+        }
+    })
+
+    res.redirect('/dashboard')
 })
 
 module.exports = router
