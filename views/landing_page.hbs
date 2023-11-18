@@ -1,12 +1,13 @@
 <h1 class="text-center">Post Page</h1>
 
-<section class="cloum align-center post-output">
+<section class="column align-center post-output">
 {{#each posts}}
 <div class="post">
-    <h3 class="text-center">{{text}}</h3>
-    <div class="row justify-between">
-        <p>{{date}}</p>
+    <h3 class="text-center">{{title}}</h3>
+    <div class="justify-between">
+        <p>{{text}}</p>
         <p>By: {{author.username}}</p>
+        <p>{{date}}</p>
     </div>
 </div>
 {{/each}}

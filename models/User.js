@@ -4,6 +4,7 @@ const { hash, compare } = require('bcrypt')
 const Post = require('./Post')
 
 
+
 class User extends Model {}
 
 User.init({
@@ -18,15 +19,20 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            isEmail: true
+            len: {
+                args: [2, 50],
+                msg: 'Username must be at least 2 characters in length.'
+            }
         }
     },
     password: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            len: [6],
-            msg: 'Password must be at least 6 characters in length.'
+            len: {
+                args: [6, 50],
+                msg: 'Password must be at least 6 characters in length.'
+            }
         }
     }
 }, {
