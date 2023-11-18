@@ -13,20 +13,13 @@ User.init({
         primaryKey: true,
         autoIncrement: true
     },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: {
-            arg: true,
-            msg: 'That email address is already in use.'
-        },
-        validate: {
-            isEmail: true
-        }
-    },
+    
     username: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+            isEmail: true
+        }
     },
     password: {
         type: DataTypes.STRING,

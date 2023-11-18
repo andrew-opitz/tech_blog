@@ -19,8 +19,14 @@ app.use(express.urlencoded({ extended: false }))
 app.engine('.hbs', engine({ extname: '.hbs' }))
 app.set('view engine', '.hbs')
 
-app.use('/api', routes)
-app.use('/', view_routes)
+app.use(session({
+  secret: 'super secret string',
+  resave: false,
+  saveUninitialized: true
+}))
+
+app.use('/', view_routes, routes)
+app.use('/auth', routes)
 
 
 db.sync({ force: false })
