@@ -29,12 +29,19 @@ router.post('/post', isAuthed, authenticate, async (req, res) => {
     res.redirect('/')
 })
 router.delete('/post/:id', isAuthed, authenticate, async (req, res) => {
-    const deleteID = req.params.id
-    const deletePost = await Post.destroy({
-        where: {
-            id: deleteID
-        }
-    })
+console.log('delete route hit')
+    try {
+        const deleteID = req.params.id
+        const deletePost = await Post.findByPk(deleteID)
+
+        await deletePost.destroy()
+
+        res.redirect("/")
+    } catch (error) {
+        const validationErrors = error.errors.map((errObj) => errObj.message)
+        req.session.errors = validationErrors;
+        res.render("/", { errors: req.session.errors })
+    }
     if (deletePost) {
         res.redirect('/')
     }
